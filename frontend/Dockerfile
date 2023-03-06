@@ -5,7 +5,8 @@ RUN apt-get install -y nodejs
 
 WORKDIR /frontend
 COPY . .
-RUN npm install 
-RUN npm install react-scripts 
+RUN npm install -g serve
+RUN npm install react-scripts
+RUN npm run build
 
-ENTRYPOINT ["npm", "start"]
+ENTRYPOINT ["serve", "-s", "build"]
