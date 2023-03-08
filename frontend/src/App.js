@@ -4,6 +4,9 @@ import UploadingForm from './components/UploadingForm';
 import JsonViewer from './components/JsonViewer';
 import ImageViewer from './components/ImageViewer';
 import axios from 'axios';
+// import logo
+import logo from './logo.svg';
+import Box from '@mui/material/Box';
 
 
 function App() {
@@ -24,7 +27,7 @@ function App() {
     }
 
     setGkai({ ...gkai, checkJobStatus: true });
-    if (gkai.job_id && gkai.status !== 'DONE' && gkai.status != 'ERROR' || job.job_id && job.job_id != gkai.job_id) {
+    if ((gkai.job_id && gkai.status !== 'DONE' && gkai.status !== 'ERROR') || (job.job_id && job.job_id !== gkai.job_id)) {
       // check status of job
       setGkai({ ...gkai, job_id: job.job_id });
       axios.get(`http://${server}/job_status?job_id=${gkai.job_id}`)
@@ -75,9 +78,24 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <h1>
+            General Knowledge Artificial Intelligence (GKAI) Web Application
+        </h1>
         <UploadingForm globalState={job} globalStateSetter={setJob} server={server} />
-        <JsonViewer json={gkai.json} />
-        <ImageViewer image={gkai.image} />
+        <Box className="App-content" sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignContent: 'center',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+            minWidth: '500px'
+        }}>
+            <JsonViewer json={gkai.json} />
+            <JsonViewer json={'[{"props": "val"}, {"other": "val"}]'} />
+            <ImageViewer image={logo} />
+            <ImageViewer image={gkai.image} />
+        </Box>
       </header>
     </div>
   );

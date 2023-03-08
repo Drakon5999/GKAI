@@ -11,7 +11,6 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
 const MyPaper = styled(Paper)({
-    padding: (theme) => theme.spacing.unit * 2,
     textAlign: 'center',
     color: (theme) => theme.palette.text.secondary,
 });
@@ -45,11 +44,12 @@ class ImageViewer extends React.Component {
         return (
             <Box sx={{
                 flexGrow: 1,
+                margin: '50px'
             }}>
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
                         <MyPaper>
-                            <img src={this.state.image} alt="image" style={{ transform: `scale(${scale})` }} />
+                            <img src={this.state.image} alt="model result" style={{ transform: `scale(${scale})` }} />
                             <Tooltip title="Zoom In">
                                 <IconButton aria-label="Zoom In" onClick={this.zoomIn}>
                                     <ZoomInIcon />

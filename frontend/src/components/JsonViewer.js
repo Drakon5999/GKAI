@@ -14,7 +14,6 @@ const MyTypography = styled(Typography)({
 });
 
 const MyPaper = styled(Paper)({
-    padding: (theme) => theme.spacing.unit * 2,
     textAlign: 'left',
     color: (theme) => theme.palette.text.secondary,
 });
@@ -41,15 +40,14 @@ class JsonViewer extends React.Component {
         const json = JSON.stringify(JSON.parse(this.state.json), null, 2);
         return (
             <Box sx={{
-                flexGrow: 1
+                flexGrow: 1,
+                margin: '50px'
             }}>
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
                         <MyPaper>
                             <Box
                                 sx={{
-                                    p: 1,
-                                    m: 2,
                                     border: 1,
                                 }}
                             >
@@ -60,8 +58,6 @@ class JsonViewer extends React.Component {
                             <Box
                                 sx={{
                                     alignItems: 'center',
-                                    p: 1,
-                                    m: 2,
                                     bgcolor: 'background.paper',
                                 }}
                             >
