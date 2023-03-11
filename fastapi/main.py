@@ -49,12 +49,11 @@ async def add_job(image: UploadFile = File(...)) -> dict:
     * return **json**
     """
     uid = uuid4()
-    print(image)
 
     return {'job_id': str(uid)}
 
 
-@app.get('/job_status/{job_id}')
+@app.get('/job_status')
 async def job_status(job_id: UUID) -> dict:
     """
     Endpoint for **find out the status** by job_id\n
@@ -63,23 +62,25 @@ async def job_status(job_id: UUID) -> dict:
     """
     if job_id == UUID('a51851dd-7109-41e8-9e6b-8ad89cf8ada3'):
         return {f'status for job {job_id}': 'DONE'}
+    elif job_id == UUID('a51851dd-7109-41e8-9e6b-8ad89cf8ada2'):
+        error_description = 'why did this happen?'
+        return {f'status for job {job_id}': 'ERROR', 'description': error_description}
 
     return {f'status for job {job_id}': 'PROCESSING'}
 
 
-@app.get('/job_result/{job_id}')
+@app.get('/job_result')
 async def job_result(job_id: UUID) -> dict:
     """
     Endpoint for **get computed bounding boxes** by job_id\n
     * param **job_id**\n
     * return **json**
     """
-    print(job_id)
 
     return {'bounding_box_1': [100.0, 20.5, 10.2, 21.3], 'bounding_box_2': [13.3, 1.5, 99.2, 28.7]}
 
 
-@app.get("/job_result_visualisation/{job_id}")
+@app.get("/job_result_visualisation")
 async def job_result_visualisation(job_id: UUID) -> FileResponse:
     """
     Endpoint for **get an image with bounding boxes on it** by job_id\n
