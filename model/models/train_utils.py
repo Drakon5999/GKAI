@@ -11,7 +11,6 @@ def train_one_epoch(model, device, optimizer, data_loader, print_freq, epoch):
     loss = 0
     iter_ = 0
     for imgs, annotations in data_loader:
-
         imgs = list(img.to(device) for img in imgs)
         annotations = [{k: v.to(device) for k, v in t.items()} for t in annotations]
         loss_dict = model(imgs, annotations)
@@ -38,6 +37,15 @@ def evaluate(model,
              iou_thresholds=(0.5),
              max_detection_thresholds=(50, 100, 200),
              filter_fn=None):
+    """
+    :param model:
+    :param dl:
+    :param device:
+    :param iou_thresholds: thresholds for counting mAP (mean Average Precision)
+    :param max_detection_thresholds: num of objects for counting mAP
+    :param filter_fn: filter function for detections (for example to exclude some classes)
+    :return:
+    """
     model.eval()
     metric = MeanAveragePrecision(class_metrics=True,
                                   iou_thresholds=iou_thresholds,

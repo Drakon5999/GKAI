@@ -1,3 +1,6 @@
+"""
+Dataloader for COCO format
+"""
 import os
 import torch
 from PIL import Image
@@ -20,6 +23,7 @@ class COCODataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         coco = self.coco
         img_id = self.ids[index]
+        # Ann is for "annotation"
         ann_ids = coco.getAnnIds(imgIds=img_id)
         coco_annotation = coco.loadAnns(ann_ids)
         path = coco.loadImgs(img_id)[0]['file_name']
@@ -29,36 +33,42 @@ class COCODataset(torch.utils.data.Dataset):
 
         boxes = []
         labels = []
+        # COCO has coordinates in format [xmin, ymin, width, height]
+        # Torch needs format [xmin, ymin, xmax, ymax]
         for i in range(num_objs):
             xmin = floor(coco_annotation[i]['bbox'][0])
             ymin = floor(coco_annotation[i]['bbox'][1])
             xmax = floor(xmin + coco_annotation[i]['bbox'][2])
             ymax = floor(ymin + coco_annotation[i]['bbox'][3])
+            # There are some detections with zero width or height
             if ymax == ymin:
                 ymax += 1
             if xmax == xmin:
                 xmax += 1
+
             boxes.append([xmin, ymin, xmax, ymax])
             labels.append(coco_annotation[i]['category_id'])
+
         boxes = torch.as_tensor(boxes, dtype=torch.float32)
         labels = torch.as_tensor(labels, dtype=torch.int64)
         img_id = torch.tensor([img_id])
         areas = []
         for i in range(num_objs):
             areas.append(coco_annotation[i]['area'])
+
         areas = torch.as_tensor(areas, dtype=torch.float32)
         iscrowd = torch.zeros((num_objs,), dtype=torch.int64)
-
-        my_annotation = dict({})
-        my_annotation["boxes"] = boxes
-        my_annotation["labels"] = labels
-        my_annotation["image_id"] = img_id
-        my_annotation["area"] = areas
-        my_annotation["iscrowd"] = iscrowd
+        # Creating annotation for model
+        annotation = dict({})
+        annotation["boxes"] = boxes
+        annotation["labels"] = labels
+        annotation["image_id"] = img_id
+        annotation["area"] = areas
+        annotation["iscrowd"] = iscrowd
 
         img = torchvision.transforms.Compose([torchvision.transforms.ToTensor()])(img)
 
-        return img, my_annotation
+        return img, annotation
 
     def __len__(self):
         return len(self.ids)

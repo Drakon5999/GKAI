@@ -11,6 +11,9 @@ import torch
 
 
 def viz_bbox(plt_img, bboxes, labels, class_names):
+    """
+    Draw bbox on image
+    """
     k = 0
     if len(bboxes) != 0:
         for x1, y1, x2, y2 in bboxes:
@@ -37,6 +40,10 @@ def viz_bbox(plt_img, bboxes, labels, class_names):
 
 
 def inference(model, device, data_loader, threshold, class_names):
+    """
+    Inference function for Jupyter notebook
+    Draws gt and predicted bboxes
+    """
     model.eval()
 
     for imgs, annotations in data_loader:
@@ -73,6 +80,9 @@ def inference(model, device, data_loader, threshold, class_names):
 
 
 def img_inference(model, device, image_path, threshold, class_names, out_dir):
+    """
+    Creates new image and json with detections based on model results
+    """
     model.eval()
 
     img = Image.open(image_path)
@@ -96,14 +106,3 @@ def img_inference(model, device, image_path, threshold, class_names, out_dir):
         meta[k] = meta[k].detach().cpu().numpy().tolist()
     with open(os.path.join(out_dir, os.path.basename(image_path).split('.')[0] + '.json'), 'w') as f:
         json.dump(meta, f)
-
-
-
-
-
-
-
-
-
-
-

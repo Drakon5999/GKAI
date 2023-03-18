@@ -29,8 +29,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.remove_zeros:
-#         clean_zero(os.path.join(args.annotations_path, 'train.json'))
-#         clean_zero(os.path.join(args.annotations_path, 'val.json'))
+        clean_zero(os.path.join(args.annotations_path, 'train.json'))
+        clean_zero(os.path.join(args.annotations_path, 'val.json'))
         train_annotations = os.path.join(args.annotations_path, 'train_clean.json')
         val_annotations = os.path.join(args.annotations_path, 'val_clean.json')
     else:

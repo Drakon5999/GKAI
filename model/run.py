@@ -1,13 +1,9 @@
-import os
 import argparse
 
 import torch
 import torchvision
 from pycocotools.coco import COCO
 
-from utils.prepare_dataset import clean_zero
-from loaders.dl import COCODataset, collate_fn
-from models.train_utils import *
 from utils.visualisation import *
 
 parser = argparse.ArgumentParser(description='Train script for detection model')
