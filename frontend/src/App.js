@@ -4,8 +4,6 @@ import UploadingForm from './components/UploadingForm';
 import JsonViewer from './components/JsonViewer';
 import ImageViewer from './components/ImageViewer';
 import axios from 'axios';
-// import logo
-import logo from './logo.svg';
 import Box from '@mui/material/Box';
 
 
