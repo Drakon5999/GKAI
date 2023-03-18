@@ -92,8 +92,6 @@ function App() {
             minWidth: '500px'
         }}>
             <JsonViewer json={gkai.json} />
-            <JsonViewer json={'[{"props": "val"}, {"other": "val"}]'} />
-            <ImageViewer image={logo} />
             <ImageViewer image={gkai.image} />
         </Box>
       </header>
