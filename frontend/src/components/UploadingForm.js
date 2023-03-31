@@ -27,7 +27,7 @@ class UploadingForm extends Component {
 
         // Update the formData object
         formData.append(
-        "myFile",
+        "image", // поменяла myFile на image для синхронизации с бэкендом
         this.state.selectedFile,
         this.state.selectedFile.name
         );

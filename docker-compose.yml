@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  frontend:
+    build: ./frontend
+    networks:
+      vpcbr:
+        ipv4_address: 168.17.0.2
+    command: "-p 3000"
+
+    environment:
+      - "BACKEND_PORT=8800"
+      - "BACKEND_IP=168.17.0.3"
+  fastapi:
+    build: ./fastapi
+    networks:
+      vpcbr:
+        ipv4_address: 168.17.0.3
+    command: "--port 8800"
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 168.17.0.0/16
+          gateway: 168.17.0.1
+
+
