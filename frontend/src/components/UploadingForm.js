@@ -48,33 +48,23 @@ class UploadingForm extends Component {
     // file upload is complete
     fileData = () => {
         if (this.state.selectedFile) {
-        return (
-            <div>
-            <h2>File Details:</h2>
-            <p>File Name: {this.state.selectedFile.name}</p>
-            <p>File Type: {this.state.selectedFile.type}</p>
-            <p>
-                Last Modified:{" "}
-                {this.state.selectedFile.lastModifiedDate.toDateString()}
-            </p>
-            </div>
-        );
-        } else {
-        return (
-            <div>
-            <br />
-            <h4>Choose before Pressing the Upload button</h4>
-            </div>
-        );
+            return (
+                <div>
+                <h2>File Details:</h2>
+                <p>File Name: {this.state.selectedFile.name}</p>
+                <p>File Type: {this.state.selectedFile.type}</p>
+                <p>
+                    Last Modified:{" "}
+                    {this.state.selectedFile.lastModifiedDate.toDateString()}
+                </p>
+                </div>
+            );
         }
     };
 
     render() {
         return (
         <div>
-            <h1>
-            General Knowledge Artificial Intelligence (GKAI) Web Application
-            </h1>
             <h3>
             Upload your image file
             </h3>
