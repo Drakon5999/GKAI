@@ -79,13 +79,13 @@ def inference(model, device, data_loader, threshold, class_names):
         clear_output()
 
 
-def img_inference(model, device, image_path, threshold, class_names, out_dir):
+def img_inference(model, device, image, threshold, class_names, out_dir):
     """
     Creates new image and json with detections based on model results
     """
     model.eval()
-
-    img = Image.open(image_path)
+    if isinstance(image, str):
+        img = Image.open(image_path)
     img = torchvision.transforms.Compose([torchvision.transforms.ToTensor()])(img)
     output = model(torch.unsqueeze(img, dim=0).to(device))
 
