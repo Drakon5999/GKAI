@@ -12,8 +12,8 @@ function App() {
 
   // Global state
 
-  // get server and port from ENV variables
-  let server = process.env.BACKEND_IP + ':' + process.env.BACKEND_PORT;
+  // get server and port
+  let server = '168.17.0.3:8800'
   const [gkai, setGkai] = useState({});
   const [job, setJob] = useState({});
 
