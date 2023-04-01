@@ -7,6 +7,9 @@ services:
         ipv4_address: 168.17.0.2
     command: "-p 3000"
 
+    environment:
+      - "BACKEND_PORT=8800"
+      - "BACKEND_IP=168.17.0.3"
   fastapi:
     build: ./fastapi
     networks:
