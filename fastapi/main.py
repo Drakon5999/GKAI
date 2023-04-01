@@ -6,9 +6,19 @@ from uuid import UUID, uuid4
 import uvicorn
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get('/')
@@ -31,11 +41,11 @@ async def root():
 - - - Возвращает json с одним полем status, типа строка
 - - - - Возможные значения: DONE, WAITING, PROCESSING, ERROR (в случае error кидать ещё описание ошибки)
 
-- - GET /job_result?job_id=<...> 
+- - GET /job_result?job_id=<...>
 - - - Принимает job_id
 - - - Возвращает json с результатами разметки
 
-- - GET /job_result_visualisation?job_id=<...> 
+- - GET /job_result_visualisation?job_id=<...>
 - - - Принимает job_id
 - - - Возвращает картинку с разметкой (не в json, а прям с типом image/...)
 """
