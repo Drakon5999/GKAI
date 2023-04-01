@@ -50,7 +50,7 @@ python3 run.py --image_path path_to_image --annotations_path path_to_annotation 
 ## Метрики
 Метрики подсчитывались на валидационной выборке COCO
 ```
-mAP_50: 0.5289
+mAP: 0.5986
 ```
 
 ## Примеры
