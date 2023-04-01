@@ -11,7 +11,9 @@ function App() {
   // GKAI is general knowledge artificial intelligence
 
   // Global state
-  let server = 'http://localhost:5000';
+
+  // TODO Подтяни из env
+  let server = '168.17.0.3:8800';
   const [gkai, setGkai] = useState({});
   const [job, setJob] = useState({});
 
