@@ -3,14 +3,35 @@ Entry point for GKAI app
 """
 
 from uuid import UUID, uuid4
-import uvicorn
-from fastapi import FastAPI, UploadFile, File
+from uvicorn import Server, Config
+from fastapi import FastAPI, BackgroundTasks, UploadFile, File
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from queue import Queue
+from dataclasses import dataclass
+from enum import Enum
+import asyncio
 
+class JobStatus(str, Enum):
+    DONE = "DONE"
+    ERROR = "ERROR"
+    PROCESSING = "PROCESSING"
+    NEW = "NEW"
 
-
+ochered = Queue()
 app = FastAPI()
+
+@dataclass
+class Job:
+    """Class for keeping track of an item in inventory."""
+    uuid: UUID
+    status: JobStatus = JobStatus.NEW
+    image: UploadFile
+    result: dict = {}
+    result_image: File
+
+
+job_mapping = {}
 
 app.add_middleware(
     CORSMiddleware,
@@ -52,15 +73,21 @@ async def root():
 
 
 @app.post('/add_job')
-async def add_job(image: UploadFile = File(...)) -> dict:
+async def add_job(job_mapper: dict, image: UploadFile, bg_task: BackgroundTasks) -> dict:
     """
     Endpoint for **upload image**\n
     * body **image**\n
     * return **json**
     """
     uid = uuid4()
-
+    new_job = Job(uuid=uid, status=JobStatus.NEW, image=image)
+    job_mapping[uid] = new_job
+    bg_task.add_task(process_job, new_job)
     return {'job_id': str(uid)}
+
+def process_job(new_job: Job):
+    new_job.status = JobStatus.PROCESSING
+
 
 
 @app.get('/job_status')
@@ -99,12 +126,25 @@ async def job_result_visualisation(job_id: UUID) -> FileResponse:
     """
     return FileResponse('test_file')
 
+async def periodic():
+    while True:
+        print('periodic')
+        await asyncio.sleep(1)
+
+def stop():
+    task.cancel()
 
 def main():
     """
     Main function
     """
-    uvicorn.run(app, host='127.0.0.1', port=8800)
+    asyncio.get_running_loop()
+    loop = asyncio.new_event_loop()
+    config = Config(app=app, loop=loop, host='127.0.0.1', port=8800)
+    server = Server(config)
+    task = loop.create_task(periodic())
+    loop.run_until_complete(server.serve())
+    stop()
 
 
 if __name__ == '__main__':
