@@ -1,25 +1,24 @@
-version: "3.9"
+version: "3.3"
 services:
   frontend:
     build: ./frontend
-    networks:
-      vpcbr:
-        ipv4_address: 168.17.0.2
     command: "-p 3000"
+    ports:
+     - "3000:3000"
+    networks:
+      tier:
+        ipv4_address: 169.17.0.2
 
   fastapi:
     build: ./fastapi
-    networks:
-      vpcbr:
-        ipv4_address: 168.17.0.3
     command: "--port 8800"
+    networks:
+      tier:
+        ipv4_address: 169.17.0.3
 
 networks:
-  vpcbr:
+  tier:
     driver: bridge
     ipam:
       config:
-        - subnet: 168.17.0.0/16
-          gateway: 168.17.0.1
-
-
+        - subnet: "169.17.0.0/16"
