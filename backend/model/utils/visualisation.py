@@ -79,7 +79,7 @@ def inference(model, device, data_loader, threshold, class_names):
         clear_output()
 
 
-def img_inference(model, device, image, threshold, class_names, out_dir):
+def img_inference(model, device, image, threshold, class_names, out_dir=None):
     """
     Creates new image and json with detections based on model results
     """
@@ -99,10 +99,12 @@ def img_inference(model, device, image, threshold, class_names, out_dir):
             pred_labels.append(labels[num])
     img = np.moveaxis(img.numpy(), 0, 2)
     pred_img = viz_bbox(img, bboxes, pred_labels, class_names)
-
-    plt.imsave(os.path.join(out_dir, os.path.basename(image_path)), pred_img)
     meta = output[0]
     for k in meta.keys():
         meta[k] = meta[k].detach().cpu().numpy().tolist()
-    with open(os.path.join(out_dir, os.path.basename(image_path).split('.')[0] + '.json'), 'w') as f:
-        json.dump(meta, f)
+    if out_dir:
+        plt.imsave(os.path.join(out_dir, os.path.basename(image_path)), pred_img)
+        with open(os.path.join(out_dir, os.path.basename(image_path).split('.')[0] + '.json'), 'w') as f:
+            json.dump(meta, f)
+    else:
+        return pred_img, meta
