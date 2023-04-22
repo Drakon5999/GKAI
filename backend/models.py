@@ -27,6 +27,7 @@ class Job:
     status: JobStatus = JobStatus.NEW
     result: Optional[dict] = None
     result_image: Optional[Image.Image] = None
+    error_message: Optional[str] = None
 
 
 class Model:
@@ -34,7 +35,7 @@ class Model:
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(box_nms_thresh=nms_threshold,
                                                                           num_classes=len(class_names),
                                                                           weights=None)
-        self.model = self.model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+        self.model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
         self.device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
         self.threshold = threshold
         self.class_names = class_names
