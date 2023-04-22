@@ -4,7 +4,7 @@ Entry point for GKAI app
 
 from uuid import UUID, uuid4
 import uvicorn
-from fastapi import FastAPI, BackgroundTasks, UploadFile
+from fastapi import FastAPI, File, BackgroundTasks, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
@@ -149,7 +149,7 @@ async def root():
 
 
 @app.post('/add_job')
-async def add_job(job_mapping: dict, image: UploadFile, bg_task: BackgroundTasks) -> dict:
+async def add_job(job_mapping: dict, bg_task: BackgroundTasks, image: UploadFile = File(...)) -> dict:
     """
     Endpoint for **upload image**\n
     * body **image**\n
