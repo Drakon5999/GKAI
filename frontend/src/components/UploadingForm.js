@@ -37,11 +37,12 @@ class UploadingForm extends Component {
 
         // Request made to the backend api
         // Send formData object
-        let result = axios.post(`http://${this.props.server}/add_job`, formData);
+        axios.post(`http://${this.props.server}/add_job`, formData).then(function (response) {
+            this.setState({ job_id: response.data.job_id });
+            this.props.globalStateSetter({ job_id: response.data.job_id });
+        });
 
         // save received job_id
-        this.setState({ job_id: result.job_id });
-        this.props.globalStateSetter({ job_id: result.job_id });
     };
 
     // File content to be displayed after

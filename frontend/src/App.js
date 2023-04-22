@@ -22,6 +22,7 @@ function App() {
   // if status is done, then get result
   // if result is not null, then show result
   const checkJobStatus = () => {
+    console.log(job.job_id);
     if (gkai.checkJobStatus) {
       return;
     }
@@ -73,7 +74,7 @@ function App() {
     setGkai({ ...gkai, checkJobStatus: false });
   }
 
-  setInterval(checkJobStatus, 200);
+  setInterval(checkJobStatus, 2000);
 
   return (
     <div className="App">
