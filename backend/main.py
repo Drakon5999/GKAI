@@ -11,100 +11,10 @@ from PIL import Image
 import io
 
 from models import Job, JobStatus, Model
+from classes import CLASS_NAMES
 
-class_names = ['background',
-               'person',
-               'bicycle',
-               'car',
-               'motorcycle',
-               'airplane',
-               'bus',
-               'train',
-               'truck',
-               'boat',
-               'traffic light',
-               'fire hydrant',
-               'No class',
-               'stop sign',
-               'parking meter',
-               'bench',
-               'bird',
-               'cat',
-               'dog',
-               'horse',
-               'sheep',
-               'cow',
-               'elephant',
-               'bear',
-               'zebra',
-               'giraffe',
-               'No class',
-               'backpack',
-               'umbrella',
-               'No class',
-               'No class',
-               'handbag',
-               'tie',
-               'suitcase',
-               'frisbee',
-               'skis',
-               'snowboard',
-               'sports ball',
-               'kite',
-               'baseball bat',
-               'baseball glove',
-               'skateboard',
-               'surfboard',
-               'tennis racket',
-               'bottle',
-               'No class',
-               'wine glass',
-               'cup',
-               'fork',
-               'knife',
-               'spoon',
-               'bowl',
-               'banana',
-               'apple',
-               'sandwich',
-               'orange',
-               'broccoli',
-               'carrot',
-               'hot dog',
-               'pizza',
-               'donut',
-               'cake',
-               'chair',
-               'couch',
-               'potted plant',
-               'bed',
-               'No class',
-               'dining table',
-               'No class',
-               'No class',
-               'toilet',
-               'No class',
-               'tv',
-               'laptop',
-               'mouse',
-               'remote',
-               'keyboard',
-               'cell phone',
-               'microwave',
-               'oven',
-               'toaster',
-               'sink',
-               'refrigerator',
-               'No class',
-               'book',
-               'clock',
-               'vase',
-               'scissors',
-               'teddy bear',
-               'hair drier',
-               'toothbrush']
 
-model = Model(model_path="./faster-rcnn-coco-v_2.pth", nms_threshold=0.2, threshold=0.5, class_names=class_names)
+model = Model(model_path="./faster-rcnn-coco-v_2.pth", nms_threshold=0.2, threshold=0.5, class_names=CLASS_NAMES)
 
 app = FastAPI()
 job_mapping = {}
@@ -165,7 +75,11 @@ async def add_job(job_mapping: dict, image: UploadFile, bg_task: BackgroundTasks
 
 def process_job(new_job: Job):
     new_job.status = JobStatus.PROCESSING
-    new_job.result_image, new_job.result = model.process_image(new_job.image)
+    try:
+        new_job.result_image, new_job.result = model.process_image(new_job.image)
+        new_job.status = JobStatus.DONE
+    except Exception as e:
+        new_job.status = JobStatus.ERROR
 
 
 @app.get('/job_status')
