@@ -59,7 +59,7 @@ async def root():
 
 
 @app.post('/add_job')
-async def add_job(job_mapping: dict, bg_task: BackgroundTasks, image: UploadFile = File(...)) -> dict:
+async def add_job(bg_task: BackgroundTasks, image: UploadFile = File(...)) -> dict:
     """
     Endpoint for **upload image**\n
     * body **image**\n
@@ -117,7 +117,7 @@ def main():
     """
     Main function
     """
-    uvicorn.run(app, host='127.0.0.1', port=8800)
+    uvicorn.run(app, host='127.0.0.1', port=8801)
 
 
 if __name__ == '__main__':
