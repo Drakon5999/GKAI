@@ -46,23 +46,19 @@ class ImageViewer extends React.Component {
                 flexGrow: 1,
                 margin: '50px'
             }}>
-                <Grid container spacing={24}>
-                    <Grid item xs={12}>
-                        <MyPaper>
-                            <img src={this.state.image} alt="model result" style={{ transform: `scale(${scale})` }} />
-                            <Tooltip title="Zoom In">
-                                <IconButton aria-label="Zoom In" onClick={this.zoomIn}>
-                                    <ZoomInIcon />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Zoom Out">
-                                <IconButton aria-label="Zoom Out" onClick={this.zoomOut}>
-                                    <ZoomOutIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </MyPaper>
-                    </Grid>
-                </Grid>
+                <MyPaper>
+                    <img src={'data:image/jpeg;base64,' + this.state.image} alt="model result" style={{ maxWidth: "500px" }} />
+                    <Tooltip title="Zoom In">
+                        <IconButton aria-label="Zoom In" onClick={this.zoomIn}>
+                            <ZoomInIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Zoom Out">
+                        <IconButton aria-label="Zoom Out" onClick={this.zoomOut}>
+                            <ZoomOutIcon />
+                        </IconButton>
+                    </Tooltip>
+                </MyPaper>
             </Box>
         );
     }

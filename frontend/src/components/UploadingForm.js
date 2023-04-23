@@ -32,31 +32,14 @@ class UploadingForm extends Component {
         this.state.selectedFile.name
         );
 
-        // Details of the uploaded file
-        console.log(this.state.selectedFile);
-
         // Request made to the backend api
         // Send formData object
-        axios.post(`http://${this.props.server}/add_job`, formData).then(function (response) {
+        axios.post(`http://${this.props.server}/add_job`, formData).then(response => {
             this.setState({ job_id: response.data.job_id });
             this.props.globalStateSetter({ job_id: response.data.job_id });
         });
 
         // save received job_id
-    };
-
-    // File content to be displayed after
-    // file upload is complete
-    fileData = () => {
-        if (this.state.selectedFile) {
-            return (
-                <div>
-                <h2>File Details:</h2>
-                <p>File Name: {this.state.selectedFile.name}</p>
-                <p>File Type: {this.state.selectedFile.type}</p>
-                </div>
-            );
-        }
     };
 
     render() {
@@ -71,7 +54,6 @@ class UploadingForm extends Component {
                 Upload!
             </button>
             </div>
-            {this.fileData()}
         </div>
         );
     }

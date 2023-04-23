@@ -24,7 +24,7 @@ class JsonViewer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            json: props.json,
+            json: props.json ? props.json.result : null,
             copied: false,
         };
     }
@@ -37,7 +37,7 @@ class JsonViewer extends React.Component {
 
         const { copied } = this.state;
         // pretty format json without escaping
-        const json = JSON.stringify(JSON.parse(this.state.json), null, 2);
+        const json = JSON.stringify(this.state.json, null, 2);
         return (
             <Box sx={{
                 flexGrow: 1,

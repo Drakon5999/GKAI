@@ -3,6 +3,7 @@ Entry point for GKAI app
 """
 
 from uuid import UUID, uuid4
+import base64
 import uvicorn
 from fastapi import FastAPI, File, BackgroundTasks, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -122,7 +123,7 @@ async def job_result_visualisation(job_id: UUID) -> StreamingResponse:
     * return **image**
     """
     check_uuid(job_id)
-    return StreamingResponse(io.BytesIO(job_mapping[job_id].result_image), media_type="image/png")
+    return StreamingResponse(io.BytesIO(base64.b64encode(job_mapping[job_id].result_image)), media_type="image/text")
 
 
 def main():
