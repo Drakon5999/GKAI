@@ -9,9 +9,11 @@ services:
       tier:
         ipv4_address: 169.17.0.2
 
-  fastapi:
-    build: ./fastapi
+  backend:
+    build: ./backend
     command: "--port 8800"
+    ports:
+      - "8800:8800"
     networks:
       tier:
         ipv4_address: 169.17.0.3
